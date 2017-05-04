@@ -7,3 +7,9 @@ I didn't find any so I wrote one.
 
 As I find other sections in the book where automation can be used I'll write a script
 and park it here.
+
+## Installation
+git clone https://github.com/youngd24/thp-scripts.git /opt/thp2
+cd /opt/thp2 
+chmod +x thp2-install.sh
+./thp2-install.sh -l log.txt
