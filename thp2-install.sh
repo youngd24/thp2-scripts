@@ -12,6 +12,8 @@
 #
 # KNOWN ISSUES:
 #
+# This script is under active development and doesn't work yet.
+#
 ###############################################################################
 
 # "Global" variables
