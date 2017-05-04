@@ -19,6 +19,8 @@
 # "Global" variables
 LOGFILE=""
 DEBUG="false"
+OS=$(uname -s)
+LTYPE=""
 
 ###############################################################################
 #                           F U N C T I O N S 
@@ -47,13 +49,53 @@ usage()
 }
 
 
+### Detect the Linux dist we're on
+detectLinux()
+{
+    # Only do this is we're on a Linux machine
+    if [ $OS == "Linux" ]; then
+
+        # RedHat derivatives
+        if [ -f /etc/redhat-release ]; then
+            debug "Detected RedHat derivative"
+            LTYPE="RedHat"
+        else
+            debug "NOT running on a RedHat type"
+        fi
+
+        # Debian derivative
+        if [ -f /etc/lsb-release ]; then
+            DISTID=$(grep DISTRIB_ID /etc/lsb-release | awk -F= '{print $2}')
+            debug "Detected DISTID $DISTID"
+            if [ $DISTID == "Kali" ]; then
+                debug "Kali detected"
+            # test these when I get a machine spun up
+            #elif [ $DISTID == "Debian"]; then
+            #    debug "Pure Debian detected"
+            #elif [ $DISTID == "Ubuntu"]; then
+            #    debug "Ubuntu detected"
+            else
+                echo "Unknown Debian dist $DISTID"
+            fi
+        else
+            debug "NOT running on a Debian type"
+        fi
+    else
+        echo "ERROR: trying to detect Linux type on a non Linux machine"
+        return 1
+    fi
+
+}
+
+
 ###############################################################################
 #                  O S   D E T E C T I O N   &   S E T U P 
 ###############################################################################
-OS=$(uname -s)
 case $OS in
     "Linux")
         debug "Running on Linux"
+
+        detectLinux
         ;;
     "Darwin")
         debug "Running on OS/X"
